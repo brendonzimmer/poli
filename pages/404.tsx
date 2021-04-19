@@ -6,11 +6,11 @@ const Error404: React.FC = () => {
     <Transition
       show={true}
       as={Fragment}
-      enter="transition ease-out duration-100"
+      enter="transition ease-out duration-200"
       enterFrom="transform opacity-0 scale-95"
       enterTo="transform opacity-100 scale-100"
       leave="transition ease-in duration-75"
-      leaveFrom="transform opacity-100 scale-100"
+      leaveFrom="transform opacity-100 scale-200"
       leaveTo="transform opacity-0 scale-95"
     >
       <div className="text-gray-800 grid justify-center items-center h-[75vh]">

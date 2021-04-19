@@ -1,4 +1,6 @@
-import { useContext } from "react";
+import Link from "next/link";
+import { Fragment, useContext } from "react";
+import { Transition } from "@headlessui/react";
 import { LocationMarkerIcon, UsersIcon } from "@heroicons/react/outline";
 import { ProfileContext, ProfileProps } from "./context/ProfileContext";
 
@@ -19,29 +21,54 @@ const ProfileInfo: React.FC = () => {
       </div>
 
       {/* Bio */}
-      <div className="text-sm px-0.5">{bioText}</div>
+      <Transition
+        appear={true}
+        show={true}
+        enter="transition ease-out duration-200"
+        enterFrom="transform origin-bottom-left translate-x-2 translate-y-2 border-opacity-100"
+        enterTo="transform border-opacity-0"
+      >
+        <div className="text-sm px-0.5">{bioText}</div>
+      </Transition>
 
-      {/* Edit Profile */}
-      <button onClick={toggleEditMode} className="w-full px-2 py-1 bg-gray-300 rounded-lg">
-        Edit Profile
-      </button>
+      <Transition
+        appear={true}
+        show={true}
+        enter="transition ease-out duration-1000"
+        enterFrom="transform opacity-0"
+        enterTo="transform opacity-100"
+        className="space-y-3"
+      >
+        <div className="space-y-2">
+          {/* Edit Profile */}
+          <button onClick={toggleEditMode} className="w-full px-2 py-1 bg-gray-300 rounded-lg">
+            Edit Profile
+          </button>
+          {/* Update Opinions */}
+          <Link href="/questions">
+            <button className="w-full px-2 py-1 bg-gray-300 rounded-lg">Share Opinions</button>
+          </Link>
+        </div>
 
-      {/* Folowers */}
-      <div className="flex">
-        <UsersIcon className="h-6 w-6 text-gray-500" />
-        <p className="ml-1">
-          {followers}
-          <span className="text-gray-500">{" follower · "}</span>
-          {following}
-          <span className="text-gray-500">{" following"}</span>
-        </p>
-      </div>
+        {/* Folowers */}
+        <div className="flex">
+          <UsersIcon className="h-6 w-6 text-gray-500" />
+          <p className="ml-1">
+            {followers}
+            <span className="text-gray-500">{" follower · "}</span>
+            {following}
+            <span className="text-gray-500">{" following"}</span>
+          </p>
+        </div>
+      </Transition>
 
       {/* Location */}
-      <div className="flex space-x-1">
-        <LocationMarkerIcon className="h-6 w-6 text-gray-500" />
-        <span>{locationText}</span>
-      </div>
+      <Transition appear={true} show={true} enter="transition ease-out duration-1000" enterFrom="transform opacity-0" enterTo="transform opacity-100">
+        <div className="flex space-x-1">
+          <LocationMarkerIcon className="h-6 w-6 text-gray-500" />
+          <span>{locationText}</span>
+        </div>
+      </Transition>
     </div>
   );
 };
