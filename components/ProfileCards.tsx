@@ -1,27 +1,25 @@
-import { FC } from "react";
+import axios, { AxiosResponse } from "axios";
+import React, { useContext, useEffect, useState } from "react";
+import { ProfileContext } from "./context/ProfileContext";
+import Cards from "./common/Cards";
+import Card from "./common/Card";
 
-const ProfileCards: FC = () => {
+const ProfileCards: React.FC = () => {
+  const { username } = useContext(ProfileContext);
+  const [cards, setCards] = useState<Card[]>([]);
+
+  useEffect(() => {
+    const handleData = async () => {
+      const { data } = await axios.get<Card[], AxiosResponse<Card[]>>("/api/questions");
+      setCards(data.filter(item => item.stance !== "Not sure"));
+    };
+
+    handleData();
+  }, []);
+
   return (
     <>
-      {/* Cards */}
-      <div className="flex overflow-x-scroll space-x-3 px-2 mb-3">
-        <div className="bg-blue-100 rounded-lg p-2 min-w-[100%] h-[40vh] divide-y divide-blue-200">
-          <h1 className="text-xl font-medium mb-1">{"This is a questoon"}</h1>
-          <p className="pt-2">{"This is my respinse"}</p>
-        </div>
-        <div className="bg-blue-100 rounded-lg p-2 min-w-[100%] h-[40vh] divide-y divide-blue-200">
-          <h1 className="text-xl font-medium mb-1">{"This is a questoon"}</h1>
-          <p className="pt-2">{"This is my respinse"}</p>
-        </div>
-        <div className="bg-blue-100 rounded-lg p-2 min-w-[100%] h-[40vh] divide-y divide-blue-200">
-          <h1 className="text-xl font-medium mb-1">{"This is a questoon"}</h1>
-          <p className="pt-2">{"This is my respinse"}</p>
-        </div>
-        <div className="bg-blue-100 rounded-lg p-2 min-w-[100%] h-[40vh] divide-y divide-blue-200">
-          <h1 className="text-xl font-medium mb-1">{"This is a questoon"}</h1>
-          <p className="pt-2">{"This is my respinse"}</p>
-        </div>
-      </div>
+      <Cards data={cards} />
     </>
   );
 };
