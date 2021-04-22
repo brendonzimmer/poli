@@ -1,4 +1,4 @@
-import Card from "./Card";
+import Card from "./<DEPRECATED>Card";
 
 const Cards: React.FC<{ data: Card[] }> = ({ data }) => {
   return (
