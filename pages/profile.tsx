@@ -1,34 +1,34 @@
 import { useContext } from "react";
-import { Transition } from "@headlessui/react";
 import { ProfileContext, ProfileProps } from "../components/context/ProfileContext";
 import ProfileInfo from "../components/ProfileInfo";
-import ProfileCards from "../components/ProfileCards";
+import ProfileQs from "../components/ProfileQs";
 import ProfileEdit from "../components/ProfileEdit";
 
-const ProfileIndex: React.FC = () => {
+const Profile: React.FC<InferGetStaticPropsType<typeof getStaticProps>> = ({ profileQs }) => {
   const { editMode } = useContext<ProfileProps>(ProfileContext);
 
-  return (
-    <Transition
-      appear={true}
-      show={true}
-      enter="transition ease-out duration-500"
-      enterFrom="transform opacity-0 scale-[0.99]"
-      enterTo="transform opacity-100 scale-100"
-      leave="transition ease-out duration-500"
-      leaveFrom="transform opacity-100 scale-100"
-      leaveTo="transform opacity-0 scale-95"
-    >
-      {!editMode ? (
-        <>
-          <ProfileInfo />
-          <ProfileCards />
-        </>
-      ) : (
-        <ProfileEdit />
-      )}
-    </Transition>
+  return !editMode ? (
+    <>
+      <ProfileInfo />
+      <ProfileQs data={profileQs} />
+    </>
+  ) : (
+    <ProfileEdit />
   );
 };
 
-export default ProfileIndex;
+import { GetStaticProps, InferGetStaticPropsType } from "next";
+import { getQuestions } from "../server/routes/questions";
+
+export const getStaticProps: GetStaticProps = async context => {
+  const data = await getQuestions();
+
+  return {
+    props: {
+      profileQs: data,
+    },
+    revalidate: 43200,
+  };
+};
+
+export default Profile;

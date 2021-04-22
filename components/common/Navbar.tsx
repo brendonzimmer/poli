@@ -4,11 +4,6 @@ import { Transition } from "@headlessui/react";
 import { ProfileContext, ProfileProps } from "../context/ProfileContext";
 import { MenuToggleContext, MenuToggleProps } from "../context/MenuToggleContext";
 
-const navigation = [
-  { name: "Home", href: "/", current: true },
-  // { name: "Topics", href: "/topics", current: false },
-];
-
 const Navbar: React.FC = () => {
   const { profilePic } = useContext<ProfileProps>(ProfileContext);
   const { show, setShow } = useContext<MenuToggleProps>(MenuToggleContext);
@@ -27,17 +22,7 @@ const Navbar: React.FC = () => {
             </div>
             <div className="hidden sm:flex sm:items-center sm:ml-6">
               <div className="flex space-x-4">
-                {navigation.map(item => (
-                  <Link key={item.name} href={item.href} aria-current={item.current ? "page" : undefined}>
-                    <button
-                      className={`px-3 py-2 rounded-md text-sm font-medium focus:outline-none ${
-                        item.current ? "bg-gray-900 text-white" : "text-gray-300 hover:bg-gray-700 hover:text-white"
-                      }`}
-                    >
-                      {item.name}
-                    </button>
-                  </Link>
-                ))}
+                <input type="text" />
               </div>
             </div>
           </div>

@@ -1,11 +1,9 @@
-interface Question {
+export interface QuestionType {
   id: number;
   question: string;
-  stance: "Yes" | "No" | "Not sure";
-  elaboration?: string;
 }
 
-const Question: React.FC<Question> = ({ question, stance, elaboration }) => {
+const Question: React.FC<QuestionType> = ({ question }) => {
   return (
     <div className="content text-gray-800 flex flex-col min-w-[100%] bg-purple-300 rounded-[0.75rem] p-2 my-4">
       <h1 className="text-4xl leading-[3rem] font-medium">{question}</h1>
