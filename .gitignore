@@ -15,12 +15,14 @@
 
 # misc
 .DS_Store
+NOTES.md
 
 # debug
 npm-debug.log*
 
 # local env files
 .env*
+.faunarc
 
 # vercel
 .vercel
