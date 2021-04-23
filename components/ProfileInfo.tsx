@@ -1,10 +1,18 @@
-import Link from "next/link";
 import { useContext } from "react";
 import { LocationMarkerIcon, UsersIcon } from "@heroicons/react/outline";
 import { ProfileContext, ProfileProps } from "./context/ProfileContext";
 
 const ProfileInfo: React.FC = () => {
-  const { toggleEditMode, locationText, bioText, profilePic, name, username, followers, following } = useContext<ProfileProps>(ProfileContext);
+  const {
+    toggleEditMode,
+    locationText,
+    bioText,
+    profilePic,
+    name,
+    username,
+    followers,
+    following,
+  } = useContext<ProfileProps>(ProfileContext);
 
   return (
     <div className="m-3 space-y-3">
@@ -22,16 +30,10 @@ const ProfileInfo: React.FC = () => {
       {/* Bio */}
       <div className="text-sm px-0.5">{bioText}</div>
 
-      <div className="space-y-2">
-        {/* Edit Profile */}
-        <button onClick={toggleEditMode} className="w-full px-2 py-1 bg-gray-300 rounded-lg">
-          Edit Profile
-        </button>
-        {/* Update Opinions */}
-        <Link href="/questions">
-          <button className="w-full px-2 py-1 bg-gray-300 rounded-lg">Share Opinions</button>
-        </Link>
-      </div>
+      {/* Edit Profile */}
+      <button onClick={toggleEditMode} className="w-full px-2 py-1 bg-gray-300 rounded-lg">
+        Edit Profile
+      </button>
 
       {/* Folowers */}
       <div className="flex">

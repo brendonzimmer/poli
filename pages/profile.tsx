@@ -20,7 +20,7 @@ const Profile: React.FC<InferGetStaticPropsType<typeof getStaticProps>> = ({ pro
 import { GetStaticProps, InferGetStaticPropsType } from "next";
 import { getQuestions } from "../server/routes/questions";
 
-export const getStaticProps: GetStaticProps = async context => {
+export const getStaticProps: GetStaticProps = async () => {
   const data = await getQuestions();
 
   return {

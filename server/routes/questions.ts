@@ -2,7 +2,7 @@ import { QuestionType } from "../../components/common/Question";
 import client, { q } from "../../server/index";
 
 interface QuestionsResponse {
-  data: [{ id: string }, string][];
+  data: [{ id: string }, string, string][];
 }
 
 async function queryQuestions() {
@@ -19,5 +19,6 @@ export const getQuestions = async () => {
   return data.map(q => ({
     id: +q[0].id,
     question: q[1],
+    emoji: q[2],
   })) as QuestionType[];
 };
