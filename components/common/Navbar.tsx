@@ -5,14 +5,17 @@ import { ProfileContext, ProfileProps } from "../context/ProfileContext";
 import { MenuToggleContext, MenuToggleProps } from "../context/MenuToggleContext";
 
 const Navbar: React.FC = () => {
-  const { profilePic } = useContext<ProfileProps>(ProfileContext);
+  const { picture } = useContext<ProfileProps>(ProfileContext);
   const { show, setShow } = useContext<MenuToggleProps>(MenuToggleContext);
 
   return (
     <nav className="bg-gray-800">
       <div className="max-w-7xl mx-auto px-2 sm:px-6 lg:px-8">
         <div className="relative flex items-center justify-between h-16">
-          <div onClick={() => setShow(false)} className="flex-1 flex items-center justify-center sm:items-stretch sm:justify-start">
+          <div
+            onClick={() => setShow(false)}
+            className="flex-1 flex items-center justify-center sm:items-stretch sm:justify-start"
+          >
             <div className="flex-shrink-0 flex items-center">
               <Link href="/">
                 <button className="focus:outline-none">
@@ -34,7 +37,7 @@ const Navbar: React.FC = () => {
               }`}
             >
               <span className="sr-only">Open user menu</span>
-              <img className="h-8 w-8 object-cover rounded-full" src={profilePic} alt="Profile Picture" />
+              <img className="h-8 w-8 object-cover rounded-full" src={picture} alt="Profile Picture" />
             </button>
             <Transition
               show={show}
@@ -78,7 +81,7 @@ const Navbar: React.FC = () => {
                   </Link>
                 </li>
                 <li className="text-left w-full">
-                  <Link href="#">
+                  <Link href="/logout">
                     <button
                       onClick={() => setShow(prevShow => !prevShow)}
                       className="w-full text-left focus:bg-gray-200 focus:outline-none block px-4 py-2 text-sm text-gray-700"
@@ -100,7 +103,11 @@ export default Navbar;
 
 // Logo SVG
 const Logo = () => (
-  <svg className="h-12 text-gray-400 w-auto fill-current" viewBox="-.54877703 -.9328656 31.00877703 25.27689404" xmlns="http://www.w3.org/2000/svg">
+  <svg
+    className="h-12 text-gray-400 w-auto fill-current"
+    viewBox="-.54877703 -.9328656 31.00877703 25.27689404"
+    xmlns="http://www.w3.org/2000/svg"
+  >
     <g fill="#4a3866">
       <path d="m12.49 20.3s-.58 1.06.32 1.3c1.29.35 1.75-1.87 1.75-1.87z" />
       <path d="m12.72 20.36s-.86 2-2.09 1.59.37-1.74.37-1.74z" />
