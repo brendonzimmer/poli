@@ -17,6 +17,6 @@ export default async (req: NextApiRequestWithUser, res: NextApiResponse, next: F
     req.user = decoded;
     return next(req, res);
   } catch {
-    return res.status(400).send("Invalid token.");
+    return res.status(400).send("Invalid token. " + config.get("db"));
   }
 };
