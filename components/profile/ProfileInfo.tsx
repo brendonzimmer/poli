@@ -1,15 +1,15 @@
 import { useContext } from "react";
 import { LocationMarkerIcon, UsersIcon } from "@heroicons/react/outline";
-import { ProfileContext, ProfileProps } from "./context/ProfileContext";
+import { ProfileContext, ProfileProps } from "../context/ProfileContext";
 
 const ProfileInfo: React.FC = () => {
   const {
     toggleEditMode,
-    locationText,
-    bioText,
-    profilePic,
     name,
     username,
+    picture,
+    biography,
+    location,
     followers,
     following,
   } = useContext<ProfileProps>(ProfileContext);
@@ -19,7 +19,7 @@ const ProfileInfo: React.FC = () => {
       {/* Profile Header */}
       <div className="flex">
         {/* Picture */}
-        <img src={profilePic} alt="Profile Picture" className="h-20 w-20 object-cover rounded-full" />
+        <img src={picture} alt="Profile Picture" className="h-20 w-20 object-cover rounded-full" />
         {/* Name and User */}
         <div className="flex flex-col justify-center ml-2 p-0">
           <h1 className="text-2xl -mb-2">{name}</h1>
@@ -28,7 +28,7 @@ const ProfileInfo: React.FC = () => {
       </div>
 
       {/* Bio */}
-      <div className="text-sm px-0.5">{bioText}</div>
+      <div className="text-sm px-0.5">{biography}</div>
 
       {/* Edit Profile */}
       <button onClick={toggleEditMode} className="w-full px-2 py-1 bg-gray-300 rounded-lg">
@@ -40,7 +40,7 @@ const ProfileInfo: React.FC = () => {
         <UsersIcon className="h-6 w-6 text-gray-500" />
         <p className="ml-1">
           {followers}
-          <span className="text-gray-500">{" follower · "}</span>
+          <span className="text-gray-500">{followers > 1 ? " followers · " : " follower · "}</span>
           {following}
           <span className="text-gray-500">{" following"}</span>
         </p>
@@ -49,7 +49,7 @@ const ProfileInfo: React.FC = () => {
       {/* Location */}
       <div className="flex space-x-1">
         <LocationMarkerIcon className="h-6 w-6 text-gray-500" />
-        <span>{locationText}</span>
+        <span>{location}</span>
       </div>
     </div>
   );
