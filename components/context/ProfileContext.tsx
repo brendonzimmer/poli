@@ -1,64 +1,117 @@
-import { useState, createContext, Dispatch, SetStateAction } from "react";
+import { useState, createContext, Dispatch, SetStateAction, useEffect } from "react";
+import { AnsweredQuestionType } from "../common/Question";
+import fetcher from "../../util/fetcher";
+import useSWR from "swr";
 
 // Types
-export interface ProfileProps {
-  editMode: boolean;
-  toggleEditMode: () => void;
-  locationText: string;
-  setLocationText: Dispatch<SetStateAction<string>>;
-  bioText: string;
-  setBioText: Dispatch<SetStateAction<string>>;
-  profilePic: string;
-  setProfilePic: () => void;
+export interface UserType<T = number> {
+  id?: number;
   name: string;
   username: string;
-  followers: number;
-  following: number;
+  picture: string;
+  email: string;
+  biography: string;
+  location: string;
+  followers: T;
+  following: T;
+  opinions: (AnsweredQuestionType | any)[];
 }
-
-const fakeData = {
-  image:
-    "https://images.unsplash.com/photo-1612459284970-e8f027596582?ixid=MnwxMjA3fDB8MHx0b3BpYy1mZWVkfDR8dG93SlpGc2twR2d8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=60",
-  name: "Rando Name",
-  username: "namezimmer",
-  bio: "Hello! I'm name and I'm open to all sorts of points of view! Looking to talk!",
-  followers: 1,
-  following: 0,
-  location: "los angeles",
-};
+export interface ProfileProps extends UserType<number> {
+  token: string;
+  setToken: Dispatch<SetStateAction<string>>;
+  loggedIn: boolean;
+  setLoggedIn: Dispatch<SetStateAction<boolean>>;
+  editMode: boolean;
+  toggleEditMode: () => void;
+  setPicture: Dispatch<SetStateAction<string>>;
+  setEmail: Dispatch<SetStateAction<string>>;
+  setBiography: Dispatch<SetStateAction<string>>;
+  setLocation: Dispatch<SetStateAction<string>>;
+}
 
 // Context
 export const ProfileContext = createContext(null);
 
 // Provider
-export const ProfileProvider = ({ children }) => {
+export const ProfileProvider: React.FC = ({ children }) => {
+  // Token State
+  const [token, setToken] = useState();
+
+  // Logged-in State
+  const [loggedIn, setLoggedIn] = useState();
+
+  // Get data from API
+  const { data, error } = useSWR<UserType<String[]>>(["/api/user", token], fetcher);
+
   // Edit Mode State
   const [editMode, setEditMode] = useState(false);
   const toggleEditMode = () => {
     setEditMode(prevEditMode => !prevEditMode);
   };
 
-  // Input State
-  const [locationText, setLocationText] = useState<string>(fakeData.location);
-  const [bioText, setBioText] = useState<string>(fakeData.bio);
+  // Location State
+  const [location, setLocation] = useState("");
+
+  // Biography State
+  const [biography, setBiography] = useState("");
 
   // Image State
-  const [profilePic, setProfilePic] = useState<string>(fakeData.image);
+  const [picture, setPicture] = useState("");
+
+  // Name State
+  const [name, setName] = useState("");
+
+  // Username State
+  const [username, setUsername] = useState("");
+
+  // Email State
+  const [email, setEmail] = useState("");
+
+  // Followers State
+  const [followers, setFollowers] = useState(0);
+
+  // Following State
+  const [following, setFollowing] = useState(0);
+
+  // Opinions State
+  const [opinions, setOpinions] = useState([]);
+
+  useEffect(() => {
+    if (data) {
+      setBiography(data.biography);
+      setLocation(data.location);
+      setPicture(data.picture);
+      setName(data.name);
+      setUsername(data.username);
+      setEmail(data.email);
+      setFollowers(data.followers.length);
+      setFollowing(data.following.length);
+      setOpinions(data.opinions);
+    }
+  }, [data]);
 
   // Final Props
-  const ProfileProps = {
+  const ProfileProps: ProfileProps = {
+    name: name,
+    username: username,
+    picture: picture,
+    email: email,
+    biography: biography,
+    location: location,
+    followers: followers,
+    following: following,
+    opinions: opinions,
+
+    token: token,
+    setToken: setToken,
+    loggedIn: loggedIn,
+    setLoggedIn: setLoggedIn,
     editMode: editMode,
     toggleEditMode: toggleEditMode,
-    locationText: locationText,
-    setLocationText: setLocationText,
-    bioText: bioText,
-    setBioText: setBioText,
-    profilePic: profilePic,
-    setProfilePic: setProfilePic,
-    name: fakeData.name,
-    username: fakeData.username,
-    followers: fakeData.followers,
-    following: fakeData.following,
+    setPicture: setPicture,
+    setEmail: setEmail,
+    setBiography: setBiography,
+    setLocation: setLocation,
   };
 
   return <ProfileContext.Provider value={ProfileProps}>{children}</ProfileContext.Provider>;

@@ -1,8 +1,8 @@
 import { useContext } from "react";
 import { ProfileContext, ProfileProps } from "../components/context/ProfileContext";
-import ProfileInfo from "../components/ProfileInfo";
-import ProfileQs from "../components/ProfileQs";
-import ProfileEdit from "../components/ProfileEdit";
+import ProfileInfo from "../components/profile/ProfileInfo";
+import Opinions from "../components/profile/Opinions";
+import ProfileEdit from "../components/profile/ProfileEdit";
 
 const Profile: React.FC = () => {
   const { editMode } = useContext<ProfileProps>(ProfileContext);
@@ -10,7 +10,7 @@ const Profile: React.FC = () => {
   return !editMode ? (
     <>
       <ProfileInfo />
-      <ProfileQs />
+      <Opinions />
     </>
   ) : (
     <ProfileEdit />
