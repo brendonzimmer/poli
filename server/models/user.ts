@@ -3,7 +3,23 @@ import config from "config";
 import jwt from "jsonwebtoken";
 import Joi from "joi";
 
-const userSchema = new mongoose.Schema({
+interface UserDocument extends mongoose.Document {
+  name: string;
+  username: string;
+  picture: string;
+  email: string;
+  biography: string;
+  location: string;
+  password: string;
+  followers: string[]; // array of IDs
+  following: string[];
+  opinions: { question: string; stance: "Yes" | "No" | "Maybe" }; // array of IDs
+  tokenVersion: number;
+  generateToken: () => string;
+  refreshToken: () => string;
+}
+
+const userSchema = new mongoose.Schema<UserDocument>({
   name: {
     type: String,
     required: true,
