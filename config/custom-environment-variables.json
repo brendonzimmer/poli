@@ -1,4 +1,4 @@
 {
-  "private-key": "cloud-private-key",
-  "db": "cloud-db"
+  "private-key": "cloud_private_key",
+  "db": "cloud_db"
 }
