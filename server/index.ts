@@ -1,5 +1,21 @@
-import faunadb from "faunadb";
-const client = new faunadb.Client({ secret: "fnAEHY4fJxACCJhhsuyBl-jcAIzAMpbKH4uB_yWM" });
+import mongoose from "mongoose";
+import config from "config";
 
-export const q = faunadb.query;
-export default client;
+mongoose.set("useNewUrlParser", true);
+mongoose.set("useUnifiedTopology", true);
+mongoose.set("useCreateIndex", true);
+
+let connected: Boolean;
+export default function () {
+  if (connected) return;
+
+  const db = config.get<string>("db");
+
+  mongoose
+    .connect(db)
+    .then(() => {
+      console.log(`Connected to ${db}...`);
+      connected = true;
+    })
+    .catch(() => console.log(`FAILED TO CONNECT TO ${db}`));
+}
