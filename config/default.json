@@ -1,0 +1,4 @@
+{
+  "db": "mongodb://localhost/poli",
+  "private-key": "superSecureKey"
+}
