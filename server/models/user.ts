@@ -1,5 +1,4 @@
 import mongoose from "mongoose";
-import config from "config";
 import jwt from "jsonwebtoken";
 import Joi from "joi";
 
@@ -86,11 +85,11 @@ const userSchema = new mongoose.Schema<UserDocument>({
 });
 
 userSchema.methods.generateToken = function () {
-  return jwt.sign({ _id: this._id }, config.get("private-key"), { expiresIn: "10m" });
+  return jwt.sign({ _id: this._id }, process.env.PRIVATE_KEY, { expiresIn: "10m" });
 };
 
 userSchema.methods.refreshToken = function () {
-  return jwt.sign({ _id: this._id, tokenVersion: this.tokenVersion }, config.get("private-key"), { expiresIn: "7d" });
+  return jwt.sign({ _id: this._id, tokenVersion: this.tokenVersion }, process.env.PRIVATE_KEY, { expiresIn: "7d" });
 };
 
 export const User = mongoose.models.User || mongoose.model("User", userSchema);

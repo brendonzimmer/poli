@@ -1,5 +1,4 @@
 import mongoose from "mongoose";
-import config from "config";
 
 mongoose.set("useNewUrlParser", true);
 mongoose.set("useUnifiedTopology", true);
@@ -9,7 +8,7 @@ let connected: Boolean;
 export default function () {
   if (connected) return;
 
-  const db = config.get<string>("db");
+  const db = process.env.DB;
 
   mongoose
     .connect(db)

@@ -3,7 +3,6 @@ import { User } from "../../../../server/models/user";
 import { setCookie } from "./../../../../util/cookie";
 import connect from "../../../../server/index";
 import jwt from "jsonwebtoken";
-import config from "config";
 import _ from "lodash";
 
 connect();
@@ -22,7 +21,7 @@ const post = async (req: NextApiRequest, res: NextApiResponse) => {
 
   let payload: any = null;
   try {
-    payload = jwt.verify(token, config.get("private-key"));
+    payload = jwt.verify(token, process.env.PRIVATE_KEY);
   } catch (e) {
     return res.status(400).send("Invalid token.");
   }
