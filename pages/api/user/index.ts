@@ -3,7 +3,7 @@ import auth, { NextApiRequestWithUser } from "../../../server/middleware/auth";
 import { User, validate } from "../../../server/models/user";
 import { setCookie } from "../../../util/cookie";
 import connect from "../../../server/index";
-import bcrypt from "bcrypt";
+import bcrypt from "bcryptjs";
 import _ from "lodash";
 
 connect();
