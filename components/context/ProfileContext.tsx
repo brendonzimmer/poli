@@ -1,6 +1,6 @@
 import { useState, createContext, Dispatch, SetStateAction, useEffect } from "react";
 import { AnsweredQuestionType } from "../common/Question";
-import fetcher from "../../util/fetcher";
+import fetcher from "../../utils/fetcher";
 import useSWR from "swr";
 
 // Types
@@ -23,10 +23,15 @@ export interface ProfileProps extends UserType<number> {
   setLoggedIn: Dispatch<SetStateAction<boolean>>;
   editMode: boolean;
   toggleEditMode: () => void;
+  setName: Dispatch<SetStateAction<string>>;
+  setUsername: Dispatch<SetStateAction<string>>;
   setPicture: Dispatch<SetStateAction<string>>;
   setEmail: Dispatch<SetStateAction<string>>;
   setBiography: Dispatch<SetStateAction<string>>;
   setLocation: Dispatch<SetStateAction<string>>;
+  setFollowers: Dispatch<SetStateAction<number>>;
+  setFollowing: Dispatch<SetStateAction<number>>;
+  setOpinions: Dispatch<SetStateAction<[]>>;
 }
 
 // Context
@@ -41,7 +46,7 @@ export const ProfileProvider: React.FC = ({ children }) => {
   const [loggedIn, setLoggedIn] = useState();
 
   // Get data from API
-  const { data, error } = useSWR<UserType<String[]>>(["/api/user", token], fetcher);
+  // const { data, error } = useSWR<UserType<String[]>>(["/api/user", token], fetcher);
 
   // Edit Mode State
   const [editMode, setEditMode] = useState(false);
@@ -50,45 +55,45 @@ export const ProfileProvider: React.FC = ({ children }) => {
   };
 
   // Location State
-  const [location, setLocation] = useState("");
+  const [location, setLocation] = useState<string>();
 
   // Biography State
-  const [biography, setBiography] = useState("");
+  const [biography, setBiography] = useState<string>();
 
   // Image State
-  const [picture, setPicture] = useState("");
+  const [picture, setPicture] = useState<string>();
 
   // Name State
-  const [name, setName] = useState("");
+  const [name, setName] = useState<string>();
 
   // Username State
-  const [username, setUsername] = useState("");
+  const [username, setUsername] = useState<string>();
 
   // Email State
-  const [email, setEmail] = useState("");
+  const [email, setEmail] = useState<string>();
 
   // Followers State
-  const [followers, setFollowers] = useState(0);
+  const [followers, setFollowers] = useState<number>();
 
   // Following State
-  const [following, setFollowing] = useState(0);
+  const [following, setFollowing] = useState<number>();
 
   // Opinions State
-  const [opinions, setOpinions] = useState([]);
+  const [opinions, setOpinions] = useState<[]>();
 
-  useEffect(() => {
-    if (data) {
-      setBiography(data.biography);
-      setLocation(data.location);
-      setPicture(data.picture);
-      setName(data.name);
-      setUsername(data.username);
-      setEmail(data.email);
-      setFollowers(data.followers.length);
-      setFollowing(data.following.length);
-      setOpinions(data.opinions);
-    }
-  }, [data]);
+  // useEffect(() => {
+  //   if (data) {
+  //     setBiography(data.biography);
+  //     setLocation(data.location);
+  //     setPicture(data.picture);
+  //     setName(data.name);
+  //     setUsername(data.username);
+  //     setEmail(data.email);
+  //     setFollowers(data.followers.length);
+  //     setFollowing(data.following.length);
+  //     setOpinions(data.opinions);
+  //   }
+  // }, [data]);
 
   // Final Props
   const ProfileProps: ProfileProps = {
@@ -108,10 +113,15 @@ export const ProfileProvider: React.FC = ({ children }) => {
     setLoggedIn: setLoggedIn,
     editMode: editMode,
     toggleEditMode: toggleEditMode,
+    setName: setName,
+    setUsername: setUsername,
     setPicture: setPicture,
     setEmail: setEmail,
     setBiography: setBiography,
     setLocation: setLocation,
+    setFollowers: setFollowers,
+    setFollowing: setFollowing,
+    setOpinions: setOpinions,
   };
 
   return <ProfileContext.Provider value={ProfileProps}>{children}</ProfileContext.Provider>;

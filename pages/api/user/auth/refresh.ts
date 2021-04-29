@@ -1,9 +1,8 @@
 import { NextApiRequest, NextApiResponse } from "next";
 import { User } from "../../../../server/models/user";
-import { setCookie } from "./../../../../util/cookie";
+import { setCookie } from "../../../../utils/cookie";
 import connect from "../../../../server/index";
 import jwt from "jsonwebtoken";
-import _ from "lodash";
 
 connect();
 
@@ -28,7 +27,7 @@ const post = async (req: NextApiRequest, res: NextApiResponse) => {
 
   const user = await User.findById(payload._id);
   if (!user) return res.status(400).send("Invalid token.");
-  if (user.tokenVersion !== payload.tokenVersion) return res.status(400).send("Invalid token version.");
+  if (user.tokenVersion !== payload.tokenVersion) return res.status(400).send("Invalid token.");
 
   setCookie(res, user.refreshToken());
   return res.send(user.generateToken());
