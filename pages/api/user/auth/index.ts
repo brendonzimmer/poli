@@ -1,9 +1,8 @@
 import { NextApiRequest, NextApiResponse } from "next";
 import { User } from "../../../../server/models/user";
-import { setCookie } from "../../../../util/cookie";
+import { setCookie } from "../../../../utils/cookie";
 import connect from "../../../../server/index";
 import bcrypt from "bcryptjs";
-import _ from "lodash";
 import Joi from "joi";
 
 connect();

@@ -1,5 +1,5 @@
 import { NextApiRequest, NextApiResponse } from "next";
-import { removeCookie } from "./../../../util/cookie";
+import { removeCookie } from "../../../utils/cookie";
 
 // Route Handler
 export default async (req: NextApiRequest, res: NextApiResponse) => {

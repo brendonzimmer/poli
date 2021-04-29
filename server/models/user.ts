@@ -38,6 +38,7 @@ const userSchema = new mongoose.Schema<UserDocument>({
   picture: {
     type: String,
     trim: true,
+    default: "/default.jpg",
   },
   email: {
     type: String,
