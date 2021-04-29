@@ -1,7 +1,7 @@
 import { NextApiRequest, NextApiResponse } from "next";
 import auth, { NextApiRequestWithUser } from "../../../server/middleware/auth";
 import { User, validate } from "../../../server/models/user";
-import { setCookie } from "../../../util/cookie";
+import { setCookie } from "../../../utils/cookie";
 import connect from "../../../server/index";
 import bcrypt from "bcryptjs";
 import _ from "lodash";
@@ -40,19 +40,20 @@ const post = async (req: NextApiRequest, res: NextApiResponse) => {
   await user.save();
 
   res.setHeader("authorization", user.generateToken());
-  setCookie(res, user.refreshToken()); // do i need this??
-  return res.send(
-    _.pick(user, [
-      "_id",
-      "name",
-      "username",
-      "picture",
-      "email",
-      "biography",
-      "location",
-      "followers",
-      "following",
-      "opinions",
-    ])
-  );
+  setCookie(res, user.refreshToken());
+  return res
+    .status(201)
+    .send(
+      _.pick(user, [
+        "name",
+        "username",
+        "picture",
+        "email",
+        "biography",
+        "location",
+        "followers",
+        "following",
+        "opinions",
+      ])
+    );
 };
