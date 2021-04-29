@@ -1,6 +1,6 @@
 import { AppProps } from "next/app";
 import { ProfileProvider } from "../components/context/ProfileContext";
-import { MenuToggleProvider } from "../components/context/MenuToggleContext";
+import { MenuToggleProvider } from "../components/context/MenuContext";
 import AppLayout from "../components/common/AppLayout";
 import "../global.css";
 

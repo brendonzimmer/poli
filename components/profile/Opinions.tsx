@@ -1,7 +1,7 @@
 import { useState, useEffect, useContext } from "react";
 import { ProfileContext, ProfileProps } from "../context/ProfileContext";
 import { QuestionType } from "../common/Question";
-import fetcher from "../../util/fetcher";
+import fetcher from "../../utils/fetcher";
 import useSWR from "swr";
 import Cards from "../common/Cards";
 

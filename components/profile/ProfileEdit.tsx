@@ -55,7 +55,8 @@ const ProfileEdit: React.FC = () => {
         <textarea
           id="biography"
           onChange={(e: React.ChangeEvent<HTMLTextAreaElement>) => setTempBiography(e.target.value)}
-          value={tempBiography || "Talk about yourself!"}
+          placeholder="Talk about yourself!"
+          value={tempBiography}
           className={`w-full h-24 text-sm border-gray-300 rounded-md resize-none ${
             tempBiography ? "" : "text-gray-400"
           }`}
@@ -68,7 +69,8 @@ const ProfileEdit: React.FC = () => {
             type="text"
             id="location"
             onChange={(e: React.ChangeEvent<HTMLInputElement>) => setTempLocation(e.target.value)}
-            value={tempLocation || "Add a location"}
+            placeholder="Add a location"
+            value={tempLocation}
             className={`w-full ml-1 border-gray-300 rounded-md ${tempLocation ? "" : "text-gray-400"}`}
           />
         </div>

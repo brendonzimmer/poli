@@ -28,7 +28,7 @@ const ProfileInfo: React.FC = () => {
       </div>
 
       {/* Bio */}
-      <div className="text-sm px-0.5">{biography}</div>
+      {biography ? <div className="text-sm px-0.5">{biography}</div> : <></>}
 
       {/* Edit Profile */}
       <button onClick={toggleEditMode} className="w-full px-2 py-1 bg-gray-300 rounded-lg">
@@ -47,10 +47,14 @@ const ProfileInfo: React.FC = () => {
       </div>
 
       {/* Location */}
-      <div className="flex space-x-1">
-        <LocationMarkerIcon className="h-6 w-6 text-gray-500" />
-        <span>{location}</span>
-      </div>
+      {location ? (
+        <div className="flex space-x-1">
+          <LocationMarkerIcon className="h-6 w-6 text-gray-500" />
+          <span>{location}</span>
+        </div>
+      ) : (
+        <></>
+      )}
     </div>
   );
 };
