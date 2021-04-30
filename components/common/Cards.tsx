@@ -1,10 +1,17 @@
-import Question, { QuestionType } from "./Question";
+import Card, { CardType } from "./Card";
 
-const Cards: React.FC<{ data: QuestionType[] }> = ({ data }) => {
+const Cards: React.FC<{ data: CardType[] }> = ({ data }) => {
   return (
     <div className="m-3">
       {data.map(d => (
-        <Question key={d._id} _id={d._id} question={d.question} emoji={d.emoji} />
+        <Card
+          key={d._id || d.ref_id}
+          _id={d._id}
+          ref_id={d.ref_id}
+          question={d.question}
+          emoji={d.emoji}
+          stance={d.stance}
+        />
       ))}
     </div>
   );
