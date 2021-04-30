@@ -39,7 +39,9 @@ const Login: React.FC = () => {
       <p className="mb-2 mt-1 text-center text-sm text-gray-600">
         Or{" "}
         <Link href="/signup">
-          <span className="font-medium text-indigo-600 hover:text-indigo-500">make an account</span>
+          <span className="select-none cursor-pointer font-medium text-indigo-600 hover:text-indigo-500">
+            make an account
+          </span>
         </Link>
       </p>
       <form className="flex flex-col space-y-2">
@@ -72,11 +74,6 @@ const Login: React.FC = () => {
             />
           </div>
         </div>
-        <div className="text-sm">
-          <Link href="#">
-            <button className="font-medium text-indigo-600 hover:text-indigo-500">Forgot your password?</button>
-          </Link>
-        </div>
         <button
           onClick={handleLogin}
           className="group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
@@ -86,6 +83,11 @@ const Login: React.FC = () => {
           </span>
           Sign in
         </button>
+        <div className="text-sm">
+          <Link href="#">
+            <button className="font-medium text-indigo-600 hover:text-indigo-500">Forgot your password?</button>
+          </Link>
+        </div>
         {invalid ? (
           <span className="text-sm font-medium text-red-600 opacity-75">Incorrect username or password.</span>
         ) : (
@@ -97,3 +99,21 @@ const Login: React.FC = () => {
 };
 
 export default Login;
+
+import { GetServerSideProps } from "next";
+import { getUserByToken } from "../utils/user";
+export const getServerSideProps: GetServerSideProps = async ({ req, res }) => {
+  const { data } = await getUserByToken(req, res);
+
+  if (data)
+    return {
+      redirect: {
+        destination: "/",
+        permanent: false,
+      },
+    };
+
+  return {
+    props: {},
+  };
+};

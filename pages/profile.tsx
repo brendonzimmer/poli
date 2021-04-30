@@ -2,8 +2,8 @@ import { ProfileContext, ProfileProps } from "../components/context/ProfileConte
 import { useProfile, UseProfileProps } from "../components/hooks/useProfile";
 import ProfileInfo from "../components/profile/ProfileInfo";
 import ProfileEdit from "../components/profile/ProfileEdit";
-import Opinions from "../components/profile/Opinions";
 import { InferGetServerSidePropsType } from "next";
+import Cards from "../components/common/Cards";
 import { useContext } from "react";
 
 const Profile: React.FC<ServerSideProps> = (props: ServerSideProps) => {
@@ -14,7 +14,7 @@ const Profile: React.FC<ServerSideProps> = (props: ServerSideProps) => {
   return !editMode ? (
     <>
       <ProfileInfo />
-      <Opinions />
+      <Cards data={props.cards} />
     </>
   ) : (
     <ProfileEdit />
@@ -22,11 +22,16 @@ const Profile: React.FC<ServerSideProps> = (props: ServerSideProps) => {
 };
 
 import { GetServerSideProps } from "next";
-import getUserByToken from "../utils/getUserByToken";
+import { CardType } from "../components/common/Card";
+import { getAllCards, getUserByToken } from "../utils/user";
 export const getServerSideProps: GetServerSideProps<UseProfileProps> = async ({ req, res }) => {
-  const { data, error } = await getUserByToken(req, res);
+  const { data } = await getUserByToken(req, res);
+  const { data: cards } = await getAllCards(req, data.opinions);
 
-  if (data)
+  // console.log(cards);
+  // console.log(JSON.parse(JSON.stringify(data.opinions)));
+
+  if (data && cards)
     return {
       props: {
         token: data.token,
@@ -38,8 +43,8 @@ export const getServerSideProps: GetServerSideProps<UseProfileProps> = async ({ 
         location: data.location,
         followers: data.followers,
         following: data.following,
-        opinions: data.opinions,
-        // editable: true, // should I use this?
+        opinions: JSON.parse(JSON.stringify(data.opinions)), // not necessary?
+        cards: cards,
       },
     };
 
@@ -48,6 +53,6 @@ export const getServerSideProps: GetServerSideProps<UseProfileProps> = async ({ 
   };
 };
 
-type ServerSideProps = InferGetServerSidePropsType<typeof getServerSideProps>;
+type ServerSideProps = InferGetServerSidePropsType<typeof getServerSideProps> & { cards: CardType[] };
 
 export default Profile;

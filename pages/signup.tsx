@@ -83,7 +83,9 @@ const Signup: React.FC = () => {
       <p className="mb-2 mt-1 text-center text-sm text-gray-600">
         Or do you{" "}
         <Link href="/login">
-          <span className="font-medium text-indigo-600 hover:text-indigo-500">have an account?</span>
+          <span className="select-none cursor-pointer font-medium text-indigo-600 hover:text-indigo-500">
+            have an account?
+          </span>
         </Link>
       </p>
 
@@ -211,3 +213,21 @@ const formSchema = Joi.object({
     "string.max": "Password is too long.",
   }),
 });
+
+import { GetServerSideProps } from "next";
+import { getUserByToken } from "../utils/user";
+export const getServerSideProps: GetServerSideProps = async ({ req, res }) => {
+  const { data } = await getUserByToken(req, res);
+
+  if (data)
+    return {
+      redirect: {
+        destination: "/",
+        permanent: false,
+      },
+    };
+
+  return {
+    props: {},
+  };
+};
