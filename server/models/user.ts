@@ -83,7 +83,7 @@ const userSchema = new mongoose.Schema<UserDocument>({
   opinions: {
     type: [
       {
-        _id: { type: mongoose.Schema.Types.ObjectId, required: true, unique: true, ref: "questions" },
+        _id: { type: mongoose.Schema.Types.ObjectId, required: true, ref: "questions" },
         stance: { type: String, required: true },
       },
     ],
