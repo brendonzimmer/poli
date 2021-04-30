@@ -1,15 +1,15 @@
 import auth, { NextApiRequestWithUser } from "./../../../server/middleware/auth";
 import { Question } from "../../../server/models/question";
+import { NextApiRequest, NextApiResponse } from "next";
 import connect from "../../../server/index";
-import { NextApiResponse } from "next";
 
 connect();
 
 // Route Handler
-export default async (req: NextApiRequestWithUser, res: NextApiResponse) => {
+export default async (req: NextApiRequest, res: NextApiResponse) => {
   if (req.method === "GET") return get(req, res);
 
-  return res.status(400).send(`Cannot ${req.method} /api/user`);
+  return res.status(400).send(`Cannot ${req.method} /api/questions`);
 };
 
 // GET ———————————————————————————————————————————————————————————————————————

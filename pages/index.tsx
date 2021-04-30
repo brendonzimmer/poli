@@ -42,7 +42,7 @@ const Home: React.FC<ServerSideProps> = (props: ServerSideProps) => {
 
 export default Home;
 
-import getUserByToken from "../utils/getUserByToken";
+import { getUserByToken } from "../utils/user";
 import { GetServerSideProps, InferGetServerSidePropsType } from "next";
 export const getServerSideProps: GetServerSideProps<UseProfileProps> = async ({ req, res }) => {
   const { data, error } = await getUserByToken(req, res);
@@ -51,7 +51,7 @@ export const getServerSideProps: GetServerSideProps<UseProfileProps> = async ({ 
     return {
       redirect: {
         destination: "/login",
-        permanent: true, // I dont know what this does
+        permanent: false,
       },
     };
 

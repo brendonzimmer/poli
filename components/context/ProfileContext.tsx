@@ -1,7 +1,5 @@
-import { useState, createContext, Dispatch, SetStateAction, useEffect } from "react";
-import { AnsweredQuestionType } from "../common/Question";
-import fetcher from "../../utils/fetcher";
-import useSWR from "swr";
+import { useState, createContext, Dispatch, SetStateAction } from "react";
+import { OpinionsObject } from "../../server/models/user";
 
 // Types
 export interface UserType<T = number> {
@@ -14,7 +12,7 @@ export interface UserType<T = number> {
   location: string;
   followers: T;
   following: T;
-  opinions: (AnsweredQuestionType | any)[];
+  opinions: OpinionsObject[];
 }
 export interface ProfileProps extends UserType<number> {
   token: string;
@@ -31,7 +29,7 @@ export interface ProfileProps extends UserType<number> {
   setLocation: Dispatch<SetStateAction<string>>;
   setFollowers: Dispatch<SetStateAction<number>>;
   setFollowing: Dispatch<SetStateAction<number>>;
-  setOpinions: Dispatch<SetStateAction<[]>>;
+  setOpinions: Dispatch<SetStateAction<OpinionsObject[]>>;
 }
 
 // Context

@@ -1,7 +1,12 @@
 import mongoose from "mongoose";
 import Joi from "joi";
 
-const questionSchema = new mongoose.Schema({
+interface QuestionDocument extends mongoose.Document {
+  question: string;
+  emoji: string;
+}
+
+const questionSchema = new mongoose.Schema<QuestionDocument>({
   question: {
     type: String,
     required: true,
@@ -19,7 +24,9 @@ const questionSchema = new mongoose.Schema({
   },
 });
 
-export const Question = mongoose.models.Question || mongoose.model("Question", questionSchema);
+export const Question =
+  (mongoose.models.Question as mongoose.Model<QuestionDocument>) ||
+  mongoose.model<QuestionDocument>("Question", questionSchema);
 
 export const validate = body => {
   const schema = Joi.object({

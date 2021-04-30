@@ -12,10 +12,15 @@ interface UserDocument extends mongoose.Document {
   password: string;
   followers: string[]; // array of IDs
   following: string[];
-  opinions: { question: string; stance: "Yes" | "No" | "Maybe" }; // array of IDs
+  opinions: OpinionsObject[]; // array of IDs
   tokenVersion: number;
   generateToken: () => string;
   refreshToken: () => string;
+}
+
+export interface OpinionsObject {
+  _id: string;
+  stance: "Yes" | "No" | "Skip";
 }
 
 const userSchema = new mongoose.Schema<UserDocument>({
@@ -76,7 +81,12 @@ const userSchema = new mongoose.Schema<UserDocument>({
     default: [],
   },
   opinions: {
-    type: [{ question: { type: mongoose.Schema.Types.ObjectId, ref: "questions" }, stance: String }],
+    type: [
+      {
+        _id: { type: mongoose.Schema.Types.ObjectId, required: true, unique: true, ref: "questions" },
+        stance: { type: String, required: true },
+      },
+    ],
     default: [],
   },
   tokenVersion: {
@@ -93,7 +103,8 @@ userSchema.methods.refreshToken = function () {
   return jwt.sign({ _id: this._id, tokenVersion: this.tokenVersion }, process.env.PRIVATE_KEY, { expiresIn: "7d" });
 };
 
-export const User = mongoose.models.User || mongoose.model("User", userSchema);
+export const User =
+  (mongoose.models.User as mongoose.Model<UserDocument>) || mongoose.model<UserDocument>("User", userSchema);
 
 // Functions ————————————————————————————————————————————————————————
 

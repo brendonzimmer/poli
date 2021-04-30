@@ -1,5 +1,6 @@
-import { useContext, useEffect } from "react";
 import { ProfileContext, ProfileProps } from "../context/ProfileContext";
+import { OpinionsObject } from "./../../server/models/user";
+import { useContext, useEffect } from "react";
 
 export const useProfile = (props: UseProfileProps) => {
   if (!props.token) return;
@@ -42,7 +43,7 @@ export interface UseProfileProps {
   email: string;
   biography: string;
   location: string;
-  followers: [];
-  following: [];
-  opinions: [];
+  followers: string[];
+  following: string[];
+  opinions: OpinionsObject[];
 }
