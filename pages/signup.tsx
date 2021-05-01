@@ -1,5 +1,6 @@
 import { ProfileContext, ProfileProps } from "../components/context/ProfileContext";
-import { useRef, useState, MouseEvent, useEffect, useContext } from "react";
+import { useRef, useState, MouseEvent, useContext } from "react";
+import { useInterval } from "../components/hooks/useInterval";
 import { useRouter } from "next/router";
 import Link from "next/link";
 import axios from "axios";
@@ -9,7 +10,7 @@ const Signup: React.FC = () => {
   const { setLoggedIn } = useContext<ProfileProps>(ProfileContext);
   const [invalid, setInvalid] = useState(false);
   const [error, setError] = useState<string>();
-  const [usernameTaken, setUsernameTaken] = useState("");
+  const [usernameState, setUsernameState] = useState<string>();
 
   const name = useRef<HTMLInputElement>();
   const username = useRef<HTMLInputElement>();
@@ -18,13 +19,37 @@ const Signup: React.FC = () => {
   const passwordConfirm = useRef<HTMLInputElement>();
   const router = useRouter();
 
-  // make sure username is available
-  useEffect(() => {
-    console.log(usernameTaken);
-  }, [usernameTaken]);
+  // check if user exists - NEED TO THROTTLE FETCHING ON SIGNUP
+  async function userExists(_username: string) {
+    if (!username.current.value) return;
+
+    const { exists } = (await axios.get<{ exists: boolean }>(`/api/user/${username.current.value}`)).data;
+    if (exists) {
+      setError("Username taken.");
+      setInvalid(true);
+      return exists;
+    }
+
+    return exists;
+  }
+  useInterval(async () => {
+    if (username.current.value !== usernameState) {
+      setUsernameState(username.current.value);
+
+      const exists = await userExists(username.current.value);
+      if (exists) return;
+
+      setInvalid(false);
+      return;
+    }
+  }, 1500);
 
   const handleSignup = async (e: MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
+
+    const exists = await userExists(username.current.value);
+    if (exists) return;
+
     setInvalid(false);
     setError(null);
 
@@ -74,9 +99,6 @@ const Signup: React.FC = () => {
       }
   };
 
-  const inputClasses =
-    "appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm";
-
   return (
     <div className="my-3 mx-4">
       <h1 className="mt-4 text-center text-3xl font-extrabold text-gray-900">Sign up!</h1>
@@ -119,7 +141,7 @@ const Signup: React.FC = () => {
                         </span>
                         <input
                           ref={username}
-                          onChange={() => setUsernameTaken(username.current.value)}
+                          // onChange={() => setUsernameTaken(username.current.value)}
                           type="text"
                           id="username"
                           autoComplete="username"

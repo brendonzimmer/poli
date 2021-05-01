@@ -5,7 +5,7 @@ mongoose.set("useUnifiedTopology", true);
 mongoose.set("useCreateIndex", true);
 
 let connected: Boolean;
-export default function () {
+export default function connect() {
   if (connected) return;
 
   const db = process.env.DB;

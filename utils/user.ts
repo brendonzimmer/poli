@@ -7,7 +7,7 @@ import { User } from "../server/models/user";
 import connect from "../server/index";
 import { setCookie } from "./cookie";
 import jwt from "jsonwebtoken";
-import _, { pick } from "lodash";
+import _ from "lodash";
 
 /**
  * Run authentication and then get token. (includes re-logging in users)
