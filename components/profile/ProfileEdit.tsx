@@ -33,7 +33,14 @@ const ProfileEdit: React.FC = () => {
     )
       return toggleEditMode();
 
-    const { data } = await axios.put<{ name: string; email: string; biography: string; location: string }>(
+    if (tempName !== name) setName(tempName);
+    // if (tempEmail !== email) setEmail(tempEmail);
+    if (tempBiography !== biography) setBiography(tempBiography);
+    if (tempLocation !== location) setLocation(tempLocation);
+
+    toggleEditMode();
+
+    return await axios.put<{ name: string; email: string; biography: string; location: string }>(
       "/api/user",
       {
         name: tempName === name ? undefined : tempName,
@@ -43,13 +50,6 @@ const ProfileEdit: React.FC = () => {
       },
       { headers: { authorization: "bearer " + token } }
     );
-
-    setName(data.name);
-    setEmail(data.email);
-    setLocation(data.location);
-    setBiography(data.biography);
-
-    return toggleEditMode();
   };
 
   const handleCancel = () => {

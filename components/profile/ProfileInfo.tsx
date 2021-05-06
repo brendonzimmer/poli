@@ -31,7 +31,10 @@ const ProfileInfo: React.FC = () => {
       {biography ? <div className="text-sm px-0.5">{biography}</div> : <></>}
 
       {/* Edit Profile */}
-      <button onClick={toggleEditMode} className="w-full px-2 py-1 bg-gray-300 rounded-lg">
+      <button
+        onClick={toggleEditMode}
+        className="w-full px-2 py-1 bg-gray-300 rounded-lg group flex justify-center items-center focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-400"
+      >
         Edit Profile
       </button>
 
