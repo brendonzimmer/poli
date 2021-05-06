@@ -113,7 +113,10 @@ export const validate = body => {
     name: Joi.string().min(1).max(55).required(),
     username: Joi.string().min(3).max(55).required(),
     picture: Joi.string(),
-    email: Joi.string().email().min(6).max(255).required(),
+    email: Joi.string()
+      .email({ tlds: { allow: false } })
+      .max(255)
+      .required(),
     biography: Joi.string().min(1).max(255),
     location: Joi.string().min(1).max(55),
     password: Joi.string().min(6).max(255).required(), //  npm i joi-password-complexity
@@ -121,5 +124,3 @@ export const validate = body => {
 
   return schema.validate(body);
 };
-
-// Export ———————————————————————————————————————————————————————————

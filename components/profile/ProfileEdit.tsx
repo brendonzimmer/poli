@@ -1,36 +1,60 @@
 import { useContext, useState } from "react";
 import { ProfileProps, ProfileContext } from "../context/ProfileContext";
-import { LocationMarkerIcon, MailIcon } from "@heroicons/react/outline";
+import { LocationMarkerIcon, MailIcon, SaveIcon, XIcon, CameraIcon } from "@heroicons/react/outline";
+import axios from "axios";
 
 const ProfileEdit: React.FC = () => {
   const {
     toggleEditMode,
+    token,
     name,
     username,
     picture,
     email,
     biography,
     location,
+    setName,
     setEmail,
     setLocation,
     setBiography,
   } = useContext<ProfileProps>(ProfileContext);
 
-  const [tempEmail, setTempEmail] = useState(email);
-  const [tempLocation, setTempLocation] = useState(location);
-  const [tempBiography, setTempBiography] = useState(biography);
+  const [tempName, setTempName] = useState(name);
+  // const [tempEmail, setTempEmail] = useState(email);
+  const [tempBiography, setTempBiography] = useState(biography || "");
+  const [tempLocation, setTempLocation] = useState(location || "");
 
-  const handleSave = () => {
-    // Post updated info
-    setEmail(tempEmail);
-    setLocation(tempLocation);
-    setBiography(tempBiography);
+  const handleSave = async () => {
+    if (
+      tempName === name &&
+      (tempBiography === biography || tempBiography === "") &&
+      (tempLocation === location || tempLocation === "") /* &&
+      tempEmail === email */
+    )
+      return toggleEditMode();
 
-    toggleEditMode();
+    const { data } = await axios.put<{ name: string; email: string; biography: string; location: string }>(
+      "/api/user",
+      {
+        name: tempName === name ? undefined : tempName,
+        biography: tempBiography || undefined,
+        location: tempLocation || undefined,
+        // email: tempEmail === email ? undefined : tempEmail,
+      },
+      { headers: { authorization: "bearer " + token } }
+    );
+
+    setName(data.name);
+    setEmail(data.email);
+    setLocation(data.location);
+    setBiography(data.biography);
+
+    return toggleEditMode();
   };
 
   const handleCancel = () => {
-    setTempEmail(email);
+    setTempName(name);
+    // setTempEmail(email);
     setTempLocation(location);
     setTempBiography(biography);
 
@@ -39,63 +63,120 @@ const ProfileEdit: React.FC = () => {
 
   return (
     <>
-      <div className="m-3 space-y-3">
+      <div className="my-3 mx-4 px-2 py-1 relative z-0">
         {/* Profile Header */}
-        <div className="flex">
-          {/* Picture */}
-          <img src={picture} alt="Profile Picture" className="h-20 w-20 object-cover rounded-full" />
-          {/* Name and User */}
-          <div className="flex flex-col justify-center ml-2 p-0">
-            <h1 className="text-2xl -mb-2">{name}</h1>
-            <h2 className="text-xl text-gray-500 font-light">{username}</h2>
+        <div className="flex mb-3">
+          <div className="relative h-1/3 w-1/3">
+            {/* Picture */}
+            <img
+              src={picture}
+              alt="Profile Picture"
+              className="w-full h-full object-cover rounded-[50%] ring-2 ring-offset-2 ring-gray-400"
+            />
+            <div className="absolute top-1 left-[75%] whitespace-nowrap">
+              <button
+                // onClick={}
+                className="relative w-full flex justify-center py-1 px-3 border border-transparent text-sm font-medium rounded-2xl text-indigo-600 hover:text-indigo-300 bg-indigo-400 hover:bg-indigo-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-400"
+              >
+                <span>
+                  <CameraIcon className="h-5 w-5 mr-2" aria-hidden="true" />
+                </span>
+                Change picture
+              </button>
+            </div>
+          </div>
+
+          {/* Username */}
+          <div className="mx-2 flex flex-col justify-center">
+            <h2 className="text-xl text-gray-500 font-normal">{/* "@" + */ username}</h2>
           </div>
         </div>
 
-        {/* Biography */}
-        <textarea
-          id="biography"
-          onChange={(e: React.ChangeEvent<HTMLTextAreaElement>) => setTempBiography(e.target.value)}
-          placeholder="Talk about yourself!"
-          value={tempBiography}
-          className={`w-full h-24 text-sm border-gray-300 rounded-md resize-none ${
-            tempBiography ? "" : "text-gray-400"
-          }`}
-        />
+        <form className="space-y-2">
+          {/* Name */}
+          <div className="flex items-center">
+            <label htmlFor="name" className="sr-only">
+              Name
+            </label>
+            <input
+              type="text"
+              id="name"
+              onChange={(e: React.ChangeEvent<HTMLInputElement>) => setTempName(e.target.value)}
+              placeholder="Name"
+              value={tempName}
+              className={`w-full border-gray-300 rounded-lg focus:ring-indigo-500 focus:border-indigo-500 block shadow-sm py-1`}
+            />
+          </div>
 
-        {/* Location */}
-        <div className="flex items-center">
-          <LocationMarkerIcon className="h-6 w-6 text-gray-500" />
-          <input
-            type="text"
-            id="location"
-            onChange={(e: React.ChangeEvent<HTMLInputElement>) => setTempLocation(e.target.value)}
-            placeholder="Add a location"
-            value={tempLocation}
-            className={`w-full ml-1 border-gray-300 rounded-md ${tempLocation ? "" : "text-gray-400"}`}
-          />
-        </div>
+          {/* Biography */}
+          <div>
+            <label htmlFor="biography" className="sr-only">
+              Biography
+            </label>
+            <textarea
+              id="biography"
+              onChange={(e: React.ChangeEvent<HTMLTextAreaElement>) => setTempBiography(e.target.value)}
+              placeholder="Talk about yourself!"
+              value={tempBiography}
+              className={`w-full h-28 border-gray-300 rounded-lg focus:ring-indigo-500 focus:border-indigo-500 block shadow-sm ${
+                tempBiography ? "" : "text-gray-400"
+              }`}
+            />
+          </div>
 
-        {/* Email */}
-        <div className="flex items-center">
-          <MailIcon className="h-6 w-6 text-gray-500" />
-          <input
-            type="text"
-            id="email"
-            onChange={(e: React.ChangeEvent<HTMLInputElement>) => setTempLocation(e.target.value)}
-            value={email}
-            className="w-full ml-1 border-gray-300 rounded-md"
-          />
-        </div>
-      </div>
+          {/* Location */}
+          <div className="flex items-center">
+            <LocationMarkerIcon className="h-6 w-6 text-gray-500" />
+            <label htmlFor="location" className="sr-only">
+              Location
+            </label>
+            <input
+              type="text"
+              id="location"
+              onChange={(e: React.ChangeEvent<HTMLInputElement>) => setTempLocation(e.target.value)}
+              placeholder="Location"
+              value={tempLocation}
+              className={`w-full border-gray-300 rounded-lg focus:ring-indigo-500 focus:border-indigo-500 block shadow-sm py-1 ml-2 ${
+                tempLocation ? "" : "text-gray-400"
+              }`}
+            />
+          </div>
 
-      {/* Buttons */}
-      <div className="ml-3 space-x-2">
-        <button onClick={handleSave} className="py-1 px-2 bg-blue-400 rounded-md text-gray-100">
-          Save
-        </button>
-        <button onClick={handleCancel} className="py-1 px-2 bg-gray-500 text-gray-200 rounded-md">
-          Cancel
-        </button>
+          {/* Email */}
+          <div className="flex items-center">
+            <MailIcon className="h-6 w-6 text-gray-500" />
+            <label htmlFor="email" className="sr-only">
+              Email: Read only.
+            </label>
+            <input
+              type="text"
+              id="email"
+              // onChange={(e: React.ChangeEvent<HTMLInputElement>) => setTempEmail(e.target.value)}
+              // value={tempEmail}
+              value={email}
+              className="w-full border-gray-300 rounded-lg pointer-events-none focus:ring-indigo-500 focus:border-indigo-500 block shadow-sm py-1 ml-2"
+            />
+          </div>
+
+          {/* Buttons */}
+          <div className="flex space-x-2">
+            <button
+              onClick={handleSave}
+              className="group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+            >
+              <span className="absolute left-0 inset-y-0 flex items-center pl-3">
+                <SaveIcon className="h-5 w-5 text-indigo-500 group-hover:text-indigo-400" aria-hidden="true" />
+              </span>
+              Save
+            </button>
+            <button
+              onClick={handleCancel}
+              className="group py-1 px-2 w-1/5 flex justify-center items-center bg-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-400"
+            >
+              <XIcon className="h-5 w-5 text-gray-500 group-hover:text-gray-700" aria-hidden="true" />
+            </button>
+          </div>
+        </form>
       </div>
     </>
   );

@@ -11,11 +11,14 @@ export default async (req: NextApiRequestWithUser, res: NextApiResponse, next: F
   const token = req.headers.authorization;
   if (!token) return res.status(401).send("Access denied. No token provided.");
 
+  const decoded = jwt.verify(token.split(" ")[1], process.env.PRIVATE_KEY) as JWT;
+  if (!decoded) return res.status(400).send("Invalid token.");
+
   try {
-    const decoded = jwt.verify(token.split(" ")[1], process.env.PRIVATE_KEY) as JWT;
     req.user = decoded;
     return next(req, res);
-  } catch {
-    return res.status(400).send("Invalid token.");
+  } catch (e) {
+    // WINSTON LOG?
+    return res.status(500).send("Something's wrong here...");
   }
 };

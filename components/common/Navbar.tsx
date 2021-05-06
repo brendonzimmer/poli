@@ -9,7 +9,7 @@ const Navbar: React.FC = () => {
   const { show, setShow } = useContext<MenuToggleProps>(MenuToggleContext);
 
   return (
-    <nav className="bg-gray-800">
+    <nav className="bg-gray-800 relative z-10">
       <div className="max-w-7xl mx-auto px-2 sm:px-6 lg:px-8">
         <div className="relative flex items-center justify-between h-16">
           <div
@@ -50,7 +50,7 @@ const Navbar: React.FC = () => {
                 leaveFrom="transform opacity-100 scale-100"
                 leaveTo="transform opacity-0 scale-95"
               >
-                <ul className="origin-top-right absolute right-0 top-10 mt-2 w-48 rounded-md shadow-lg py-1 bg-white ring-1 ring-black ring-opacity-5 focus:outline-none">
+                <ul className="origin-top-right absolute right-3 top-8 mt-2 w-48 rounded-md shadow-lg py-1 bg-white ring-1 ring-black ring-opacity-5 focus:outline-none">
                   <li className="text-left w-full">
                     <Link href="/profile">
                       <button
