@@ -40,7 +40,7 @@ const ProfileInfo: React.FC = () => {
         <UsersIcon className="h-6 w-6 text-gray-500" />
         <p className="ml-1">
           {followers}
-          <span className="text-gray-500">{followers > 1 ? " followers · " : " follower · "}</span>
+          <span className="text-gray-500">{followers !== 1 ? " followers · " : " follower · "}</span>
           {following}
           <span className="text-gray-500">{" following"}</span>
         </p>

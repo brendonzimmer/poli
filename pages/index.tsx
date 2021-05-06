@@ -66,7 +66,7 @@ export const getServerSideProps: GetServerSideProps<UseProfileProps> = async ({ 
       location: data.location,
       followers: data.followers,
       following: data.following,
-      opinions: data.opinions,
+      opinions: JSON.parse(JSON.stringify(data.opinions)),
     },
   };
 };
