@@ -1,6 +1,7 @@
-import { useContext, useState } from "react";
-import { ProfileProps, ProfileContext } from "../context/ProfileContext";
 import { LocationMarkerIcon, MailIcon, SaveIcon, XIcon, CameraIcon } from "@heroicons/react/outline";
+import { ProfileProps, ProfileContext } from "../context/ProfileContext";
+import { pictureToBase64 } from "../../utils/picture";
+import { useContext, useState, useRef } from "react";
 import axios from "axios";
 
 const ProfileEdit: React.FC = () => {
@@ -15,6 +16,7 @@ const ProfileEdit: React.FC = () => {
     location,
     setName,
     setEmail,
+    setPicture,
     setLocation,
     setBiography,
   } = useContext<ProfileProps>(ProfileContext);
@@ -61,38 +63,61 @@ const ProfileEdit: React.FC = () => {
     toggleEditMode();
   };
 
+  const handleUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const uploaded = e.target.files[0];
+    if (!uploaded) return;
+
+    const pictureData = await pictureToBase64(uploaded);
+
+    const { data } = await axios.post<{ username: string; picture: string }>(
+      "/api/user/upload",
+      { data: pictureData },
+      { headers: { authorization: "bearer " + token } }
+    );
+
+    setPicture(data.picture);
+  };
+
   return (
     <>
-      <div className="my-3 mx-4 px-2 py-1 relative z-0">
+      {/* <Cropper /> */}
+      <div className="m-3">
         {/* Profile Header */}
-        <div className="flex mb-3">
-          <div className="relative h-1/3 w-1/3">
-            {/* Picture */}
-            <img
-              src={picture}
-              alt="Profile Picture"
-              className="w-full h-full object-cover rounded-[50%] ring-2 ring-offset-2 ring-gray-400"
-            />
-            <div className="absolute top-1 left-[75%] whitespace-nowrap">
-              <button
-                // onClick={}
-                className="relative w-full flex justify-center py-1 px-3 border border-transparent text-sm font-medium rounded-2xl text-indigo-600 hover:text-indigo-300 bg-indigo-400 hover:bg-indigo-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-400"
-              >
-                <span>
-                  <CameraIcon className="h-5 w-5 mr-2" aria-hidden="true" />
-                </span>
-                Change picture
-              </button>
-            </div>
-          </div>
 
-          {/* Username */}
-          <div className="mx-2 flex flex-col justify-center">
-            <h2 className="text-xl text-gray-500 font-normal">{/* "@" + */ username}</h2>
+        <div className="flex mb-3 w-1/3">
+          {/* Picture */}
+          <img
+            src={picture}
+            alt="Profile Picture"
+            className="mb-1 w-full h-full object-cover rounded-[50%] ring-2 ring-offset-2 ring-gray-400"
+          />
+          <div className="ml-3 flex flex-col justify-center">
+            {/* Upload Picture */}
+            <label
+              htmlFor="picture-upload"
+              className="whitespace-nowrap w-full flex justify-center py-1 px-3 border border-transparent text-sm font-medium rounded-2xl text-indigo-600 hover:text-indigo-300 bg-indigo-400 hover:bg-indigo-500 focus-within:outline-none focus-within:ring-2 focus-within:ring-offset-2 focus-within:ring-indigo-400"
+            >
+              <input
+                type="file"
+                id="picture-upload"
+                accept="image/png, image/jpeg, .heic"
+                className="fixed right-full bottom-full"
+                onChange={handleUpload}
+              />
+              <span>
+                <CameraIcon className="h-5 w-5 mr-2" aria-hidden="true" />
+              </span>
+              Change picture
+            </label>
+
+            {/* Username */}
+            <h2 className="mt-1 w-min text-sm text-gray-500 text-center font-medium py-1 px-3 border border-transparent rounded-2xl bg-gray-300">
+              {"@" + username}
+            </h2>
           </div>
         </div>
 
-        <form className="space-y-2">
+        <div className="space-y-2">
           {/* Name */}
           <div className="flex items-center">
             <label htmlFor="name" className="sr-only">
@@ -154,6 +179,7 @@ const ProfileEdit: React.FC = () => {
               // onChange={(e: React.ChangeEvent<HTMLInputElement>) => setTempEmail(e.target.value)}
               // value={tempEmail}
               value={email}
+              readOnly
               className="w-full border-gray-300 rounded-lg pointer-events-none focus:ring-indigo-500 focus:border-indigo-500 block shadow-sm py-1 ml-2"
             />
           </div>
@@ -176,7 +202,7 @@ const ProfileEdit: React.FC = () => {
               <XIcon className="h-5 w-5 text-gray-500 group-hover:text-gray-700" aria-hidden="true" />
             </button>
           </div>
-        </form>
+        </div>
       </div>
     </>
   );

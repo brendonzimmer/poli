@@ -9,7 +9,7 @@ const Navbar: React.FC = () => {
   const { show, setShow } = useContext<MenuToggleProps>(MenuToggleContext);
 
   return (
-    <nav className="bg-gray-800 relative z-10">
+    <nav className="bg-gray-800">
       <div className="max-w-7xl mx-auto px-2 sm:px-6 lg:px-8">
         <div className="relative flex items-center justify-between h-16">
           <div
