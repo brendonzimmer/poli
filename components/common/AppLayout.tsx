@@ -14,7 +14,7 @@ const AppLayout: React.FC<AppLayoutProps> = ({ Component, pageProps }) => {
   return (
     <>
       <Navbar />
-      <div onClick={() => setShow(false)}>
+      <div className="h-[calc(100vh-5rem)]" onClick={() => setShow(false)}>
         <Component {...pageProps} />
       </div>
     </>

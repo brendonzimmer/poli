@@ -1,6 +1,7 @@
 import { MouseEvent, useContext, useRef, useState } from "react";
 import { ProfileContext, ProfileProps } from "../components/context/ProfileContext";
 import { LockClosedIcon } from "@heroicons/react/solid";
+import Button from "../components/common/Button";
 import { useRouter } from "next/router";
 import Link from "next/link";
 import axios from "axios";
@@ -31,15 +32,15 @@ const Login: React.FC = () => {
   };
 
   const inputClasses =
-    "appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm";
+    "appearance-none rounded-none relative block w-full px-3 py-2 border border-secondary-light placeholder-secondary text-secondary-darker focus:outline-none focus:ring-button focus:border-button focus:z-10 sm:text-sm";
 
   return (
     <div className="my-3 mx-4">
-      <h1 className="mt-4 text-center text-3xl font-extrabold text-gray-900">Sign in</h1>
-      <p className="mb-2 mt-1 text-center text-sm text-gray-600">
+      <h1 className="mt-4 text-center text-3xl font-extrabold text-primary">Sign in</h1>
+      <p className="mb-2 mt-1 text-center text-sm text-secondary-dark">
         Or{" "}
         <Link href="/signup">
-          <span className="select-none cursor-pointer font-medium text-indigo-600 hover:text-indigo-500">
+          <span className="select-none cursor-pointer font-medium text-button hover:text-button-light">
             make an account
           </span>
         </Link>
@@ -74,18 +75,12 @@ const Login: React.FC = () => {
             />
           </div>
         </div>
-        <button
-          onClick={handleLogin}
-          className="group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
-        >
-          <span className="absolute left-0 inset-y-0 flex items-center pl-3">
-            <LockClosedIcon className="h-5 w-5 text-indigo-500 group-hover:text-indigo-400" aria-hidden="true" />
-          </span>
+        <Button onClick={handleLogin} icon={LockClosedIcon}>
           Sign in
-        </button>
+        </Button>
         <div className="text-sm">
           <Link href="#">
-            <button className="font-medium text-indigo-600 hover:text-indigo-500">Forgot your password?</button>
+            <button className="font-medium text-button hover:text-button-light">Forgot your password?</button>
           </Link>
         </div>
         {invalid ? (

@@ -1,7 +1,8 @@
 import { LocationMarkerIcon, MailIcon, SaveIcon, XIcon, CameraIcon } from "@heroicons/react/outline";
 import { ProfileProps, ProfileContext } from "../context/ProfileContext";
 import { pictureToBase64 } from "../../utils/picture";
-import { useContext, useState, useRef } from "react";
+import { useContext, useState } from "react";
+import Button from "../common/Button";
 import axios from "axios";
 
 const ProfileEdit: React.FC = () => {
@@ -81,21 +82,17 @@ const ProfileEdit: React.FC = () => {
   return (
     <>
       {/* <Cropper /> */}
-      <div className="m-3">
+      <div className="m-3 text-primary">
         {/* Profile Header */}
 
-        <div className="flex mb-3 w-1/3">
+        <div className="grid grid-cols-3 gap-2 mb-3">
           {/* Picture */}
-          <img
-            src={picture}
-            alt="Profile Picture"
-            className="mb-1 w-full h-full object-cover rounded-[50%] ring-2 ring-offset-2 ring-gray-400"
-          />
-          <div className="ml-3 flex flex-col justify-center">
+          <img src={picture} alt="Profile Picture" className="w-full object-cover rounded-full" />
+          <div className="col-span-2 flex flex-col justify-center">
             {/* Upload Picture */}
             <label
               htmlFor="picture-upload"
-              className="whitespace-nowrap w-full flex justify-center py-1 px-3 border border-transparent text-sm font-medium rounded-2xl text-indigo-600 hover:text-indigo-300 bg-indigo-400 hover:bg-indigo-500 focus-within:outline-none focus-within:ring-2 focus-within:ring-offset-2 focus-within:ring-indigo-400"
+              className="whitespace-nowrap cursor-pointer max-w-min flex justify-center py-1 px-3 border border-transparent text-sm font-medium rounded-2xl text-button-lighter hover:text-button-dark bg-button hover:bg-button-light focus-within:outline-none focus-within:ring-2 focus-within:ring-offset-2 focus-within:ring-button"
             >
               <input
                 type="file"
@@ -111,7 +108,7 @@ const ProfileEdit: React.FC = () => {
             </label>
 
             {/* Username */}
-            <h2 className="mt-1 w-min text-sm text-gray-500 text-center font-medium py-1 px-3 border border-transparent rounded-2xl bg-gray-300">
+            <h2 className="mt-1 w-min text-sm text-secondary-slightly-dark text-center font-medium py-1 px-3 border border-transparent rounded-2xl bg-secondary-lighter">
               {"@" + username}
             </h2>
           </div>
@@ -129,7 +126,7 @@ const ProfileEdit: React.FC = () => {
               onChange={(e: React.ChangeEvent<HTMLInputElement>) => setTempName(e.target.value)}
               placeholder="Name"
               value={tempName}
-              className={`w-full border-gray-300 rounded-lg focus:ring-indigo-500 focus:border-indigo-500 block shadow-sm py-1`}
+              className={`w-full border-secondary-light rounded-lg focus:ring-button focus:border-button block shadow-sm py-1`}
             />
           </div>
 
@@ -143,15 +140,15 @@ const ProfileEdit: React.FC = () => {
               onChange={(e: React.ChangeEvent<HTMLTextAreaElement>) => setTempBiography(e.target.value)}
               placeholder="Talk about yourself!"
               value={tempBiography}
-              className={`w-full h-28 border-gray-300 rounded-lg focus:ring-indigo-500 focus:border-indigo-500 block shadow-sm ${
-                tempBiography ? "" : "text-gray-400"
+              className={`w-full h-28 border-secondary-light rounded-lg focus:ring-button focus:border-button block shadow-sm ${
+                tempBiography ? "" : "text-secondary-light"
               }`}
             />
           </div>
 
           {/* Location */}
           <div className="flex items-center">
-            <LocationMarkerIcon className="h-6 w-6 text-gray-500" />
+            <LocationMarkerIcon className="h-6 w-6 text-secondary-slightly-dark" />
             <label htmlFor="location" className="sr-only">
               Location
             </label>
@@ -161,15 +158,15 @@ const ProfileEdit: React.FC = () => {
               onChange={(e: React.ChangeEvent<HTMLInputElement>) => setTempLocation(e.target.value)}
               placeholder="Location"
               value={tempLocation}
-              className={`w-full border-gray-300 rounded-lg focus:ring-indigo-500 focus:border-indigo-500 block shadow-sm py-1 ml-2 ${
-                tempLocation ? "" : "text-gray-400"
+              className={`w-full border-secondary-light rounded-lg focus:ring-button focus:border-button block shadow-sm py-1 ml-2 ${
+                tempLocation ? "" : "text-secondary-light"
               }`}
             />
           </div>
 
           {/* Email */}
           <div className="flex items-center">
-            <MailIcon className="h-6 w-6 text-gray-500" />
+            <MailIcon className="h-6 w-6 text-secondary-slightly-dark" />
             <label htmlFor="email" className="sr-only">
               Email: Read only.
             </label>
@@ -180,27 +177,24 @@ const ProfileEdit: React.FC = () => {
               // value={tempEmail}
               value={email}
               readOnly
-              className="w-full border-gray-300 rounded-lg pointer-events-none focus:ring-indigo-500 focus:border-indigo-500 block shadow-sm py-1 ml-2"
+              className="w-full border-secondary-light rounded-lg pointer-events-none focus:ring-button focus:border-button block shadow-sm py-1 ml-2"
             />
           </div>
 
           {/* Buttons */}
           <div className="flex space-x-2">
-            <button
-              onClick={handleSave}
-              className="group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
-            >
-              <span className="absolute left-0 inset-y-0 flex items-center pl-3">
-                <SaveIcon className="h-5 w-5 text-indigo-500 group-hover:text-indigo-400" aria-hidden="true" />
-              </span>
+            <Button onClick={handleSave} icon={SaveIcon}>
               Save
-            </button>
-            <button
+            </Button>
+            <Button
               onClick={handleCancel}
-              className="group py-1 px-2 w-1/5 flex justify-center items-center bg-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-400"
+              className="py-1 px-2 w-1/5 flex justify-center items-center bg-secondary-lighter focus:ring-secondary-light hover:bg-secondary-light"
             >
-              <XIcon className="h-5 w-5 text-gray-500 group-hover:text-gray-700" aria-hidden="true" />
-            </button>
+              <XIcon
+                className="h-5 w-5 text-secondary-slightly-dark group-hover:text-secondary-dark"
+                aria-hidden="true"
+              />
+            </Button>
           </div>
         </div>
       </div>

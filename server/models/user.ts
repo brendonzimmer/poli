@@ -96,7 +96,7 @@ const userSchema = new mongoose.Schema<UserDocument>({
 });
 
 userSchema.methods.generateToken = function () {
-  return jwt.sign({ _id: this._id }, process.env.PRIVATE_KEY, { expiresIn: "10m" });
+  return jwt.sign({ _id: this._id }, process.env.PRIVATE_KEY, { expiresIn: "1h" });
 };
 
 userSchema.methods.refreshToken = function () {

@@ -12,7 +12,7 @@ const Home: React.FC<ServerSideProps> = (props: ServerSideProps) => {
   return (
     <>
       <Head>
-        <title>Poli</title>
+        <title>Home - Reason.</title>
       </Head>
       {loggedIn ? (
         <div className="m-3 flex justify-around bg-gray-800 text-gray-300">

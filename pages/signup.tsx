@@ -1,6 +1,7 @@
 import { ProfileContext, ProfileProps } from "../components/context/ProfileContext";
 import { useRef, useState, MouseEvent, useContext } from "react";
 import { useInterval } from "../components/hooks/useInterval";
+import Button from "../components/common/Button";
 import { useRouter } from "next/router";
 import Link from "next/link";
 import axios from "axios";
@@ -102,11 +103,11 @@ const Signup: React.FC = () => {
 
   return (
     <div className="my-3 mx-4">
-      <h1 className="mt-4 text-center text-3xl font-extrabold text-gray-900">Sign up!</h1>
-      <p className="mb-2 mt-1 text-center text-sm text-gray-600">
+      <h1 className="mt-4 text-center text-3xl font-extrabold text-primary">Sign up!</h1>
+      <p className="mb-2 mt-1 text-center text-sm text-secondary-dark">
         Or do you{" "}
         <Link href="/login">
-          <span className="select-none cursor-pointer font-medium text-indigo-600 hover:text-indigo-500">
+          <span className="select-none cursor-pointer font-medium text-button hover:text-button-light">
             have an account?
           </span>
         </Link>
@@ -117,10 +118,10 @@ const Signup: React.FC = () => {
           <div className="md:mt-0 md:col-span-2">
             <form>
               <div className="sm:rounded-md">
-                <div className="px-4 py-2 bg-white sm:p-6">
+                <div className="px-4 py-2 bg-white rounded-lg pb-4 sm:p-6">
                   <div className="grid grid-cols-6 gap-6">
                     <div className="col-span-6 sm:col-span-3">
-                      <label htmlFor="name" className="block text-sm font-medium text-gray-700">
+                      <label htmlFor="name" className="block text-sm font-medium text-secondary-darker">
                         Name
                       </label>
                       <input
@@ -128,16 +129,16 @@ const Signup: React.FC = () => {
                         ref={name}
                         id="name"
                         autoComplete="name"
-                        className="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
+                        className="mt-1 focus:ring-button focus:border-button block w-full shadow-sm sm:text-sm border-secondary-light rounded-md"
                       />
                     </div>
 
                     <div className="col-span-6 sm:col-span-3">
-                      <label htmlFor="username" className="block text-sm font-medium text-gray-700">
+                      <label htmlFor="username" className="block text-sm font-medium text-secondary-darker">
                         Username
                       </label>
                       <div className="flex mt-1">
-                        <span className="inline-flex items-center px-3 rounded-l-md border border-r-0 border-gray-300 bg-gray-50 text-gray-500 text-sm">
+                        <span className="inline-flex items-center px-3 rounded-l-md border border-r-0 border-secondary-light bg-gray-50 text-secondary text-sm">
                           @
                         </span>
                         <input
@@ -146,13 +147,13 @@ const Signup: React.FC = () => {
                           type="text"
                           id="username"
                           autoComplete="username"
-                          className="focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-r-md"
+                          className="focus:ring-button focus:border-button block w-full shadow-sm sm:text-sm border-secondary-light rounded-r-md"
                         />
                       </div>
                     </div>
 
                     <div className="col-span-6 sm:col-span-4">
-                      <label htmlFor="email" className="block text-sm font-medium text-gray-700">
+                      <label htmlFor="email" className="block text-sm font-medium text-secondary-darker">
                         Email address
                       </label>
                       <input
@@ -160,12 +161,12 @@ const Signup: React.FC = () => {
                         type="text"
                         id="email"
                         autoComplete="email"
-                        className="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
+                        className="mt-1 focus:ring-button focus:border-button block w-full shadow-sm sm:text-sm border-secondary-light rounded-md"
                       />
                     </div>
 
                     <div className="col-span-6">
-                      <label htmlFor="password" className="block text-sm font-medium text-gray-700">
+                      <label htmlFor="password" className="block text-sm font-medium text-secondary-darker">
                         Password
                       </label>
                       <input
@@ -173,12 +174,12 @@ const Signup: React.FC = () => {
                         type="password"
                         id="password"
                         autoComplete="new-password"
-                        className="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
+                        className="mt-1 focus:ring-button focus:border-button block w-full shadow-sm sm:text-sm border-secondary-light rounded-md"
                       />
                     </div>
 
                     <div className="col-span-6">
-                      <label htmlFor="passwordConfirm" className="block text-sm font-medium text-gray-700">
+                      <label htmlFor="passwordConfirm" className="block text-sm font-medium text-secondary-darker">
                         Confirm Password
                       </label>
                       <input
@@ -186,16 +187,16 @@ const Signup: React.FC = () => {
                         type="password"
                         id="passwordConfirm"
                         autoComplete="new-password"
-                        className="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
+                        className="mt-1 focus:ring-button focus:border-button block w-full shadow-sm sm:text-sm border-secondary-light rounded-md"
                       />
                     </div>
 
-                    <button
+                    <Button
                       onClick={handleSignup}
                       className="col-span-6 sm:col-span-3 group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
                     >
                       Sign up
-                    </button>
+                    </Button>
                     {invalid ? (
                       <span className="-mt-4 col-span-6 sm:col-span-3 text-sm font-medium text-red-600 opacity-75">
                         {error}
